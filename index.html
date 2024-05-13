@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator Simulator</title>
+    <style>
+        .hello {
+            background-color: rgb(203, 104, 29);
+            color: black;
+            font-size: 3rem; 
+            text-align: center; 
+            width: 100%; 
+            margin-top: 0; 
+        }
+        .calculator {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+            margin: auto;
+            margin-top: 10%;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            background-color: gray;
+        }
+        .display {
+            margin-top: 5%;
+            margin-bottom: 5%;
+            padding: 15px;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            font-size: 2rem;
+            text-align: right;
+        }
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .button{
+            flex: 1;
+            margin: 5px;
+            padding: 10px;
+            background-color: #425062;
+            color: #fff;
+            font-size: 1.5rem;
+            border-radius: 6px;
+        }
+        .button:active {
+            background-color: #d4d4d4;
+        }
+        .operator {
+    background-color: #b46618; 
+}
+    </style>
+</head>
+<body>
+    <div class="hello">
+        CHÀO MỪNG ĐẾN VỚI MÁY TÍNH
+    </div>
+    <div class="calculator">
+        <div class="display">0</div>
+        <div class="button-row">
+            <button class="button operator" onclick="clearAll()">AC</button>
+            <button class="button operator" onclick="buttonNum(this.textContent)">%</button>
+            <button class="button operator" onclick="del()">C</button>
+            <button class="button operator" onclick="setOperator(this.textContent)">/</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="buttonNum(this.textContent)">7</button>
+            <button class="button" onclick="buttonNum(this.textContent)">8</button>
+            <button class="button" onclick="buttonNum(this.textContent)">9</button>
+            <button class="button operator" onclick="setOperator(this.textContent)">X</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="buttonNum(this.textContent)">4</button>
+            <button class="button" onclick="buttonNum(this.textContent)">5</button>
+            <button class="button" onclick="buttonNum(this.textContent)">6</button>
+            <button class="button operator" onclick="setOperator(this.textContent)">-</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="buttonNum(this.textContent)">1</button>
+            <button class="button" onclick="buttonNum(this.textContent)">2</button>
+            <button class="button" onclick="buttonNum(this.textContent)">3</button>
+            <button class="button operator" onclick="setOperator(this.textContent)">+</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="buttonNum(this.textContent)">00</button>
+            <button class="button" onclick="buttonNum(this.textContent)">0</button>
+            <button class="button" onclick="buttonNum(this.textContent)" >.</button>
+            <button class="button operator" onclick="calculate()">=</button>
+        </div>
+        </div>
+    </div>
+</body>
+<script>
+    let result = 0;
+    let currentInput = '';
+    let operator = null;
+    const display = document.querySelector('.display');
+
+    function buttonNum(btnValue) {
+        currentInput += btnValue;
+        display.textContent = currentInput;
+    }
+
+    function setOperator(op) {
+        if (currentInput) {
+            let inp=parseFloat(currentInput);
+            if (currentInput[currentInput.length-1]=='%')
+                inp/=100;
+            switch (operator) {
+                case '+':
+                    result += inp;
+                    break;
+                case '-':
+                    result -= inp;
+                    break;
+                case 'X':
+                    result *= inp;
+                    break;
+                case '/':
+                    result /= inp;
+                    break;
+                case null:
+                    result = inp;
+                    break;
+            }
+            currentInput = '';
+        }
+        operator = op;
+    }
+
+    function calculate() {
+        if (operator && currentInput) {
+            let secondOperand = parseFloat(currentInput);
+            if (currentInput[currentInput.length-1]=='%')
+                secondOperand/=100;
+            switch (operator) {
+                case '+':
+                    result += secondOperand;
+                    break;
+                case '-':
+                    result -= secondOperand;
+                    break;
+                case 'X':
+                    result *= secondOperand;
+                    break;
+                case '/':
+                    result /= secondOperand;
+                    break;
+            }
+            currentInput = String(result);
+            display.textContent = currentInput;
+            currentInput='';
+            operator = null;
+        }
+    }
+    function clearAll() {
+        result = 0;
+        currentInput = '';
+        operator = null;
+        display.textContent = '0';
+    }
+    function del()
+    {
+        if (currentInput!='') {
+        currentInput =currentInput.substring(0,currentInput.length-1);
+        if (currentInput.length==0)
+            display.textContent = '0';
+        else
+        display.textContent = currentInput;
+        }
+    }
+</script>
+</html>
